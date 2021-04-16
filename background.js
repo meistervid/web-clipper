@@ -18,3 +18,16 @@ let color = '#3aa757';
 //         .then(response => response.json())
 //         .then(console.log);
 // });
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        chrome.tabs.captureVisibleTab(
+            null,
+            {},
+            function(dataUrl)
+            {
+                sendResponse({imgSrc:dataUrl});
+            }
+        )
+    }
+);
