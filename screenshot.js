@@ -39,18 +39,18 @@ var offsetY = 0;
 // this flage is true when the user is dragging the mouse
 var isDown = false;
 
-// these vars will hold the starting mouse position
-var startX;
-var startY;
-
+// label text
+ctx.font = "30px Arial";
+ctx.textAlign = "center";
+ctx.fillText("Select area", canvas.width/2, canvas.height/2);
 
 function handleMouseDown(e) {
     e.preventDefault();
     e.stopPropagation();
 
     // save the starting x/y of the rectangle
-    startX = parseInt(e.clientX - offsetX);
-    startY = parseInt(e.clientY - offsetY);
+    startX = parseInt(e.clientX);
+    startY = parseInt(e.clientY);
 
     // set a flag indicating the drag has begun
     isDown = true;
@@ -74,8 +74,8 @@ function handleMouseMove(e) {
     }
 
     // get the current mouse position
-    mouseX = parseInt(e.clientX - offsetX);
-    mouseY = parseInt(e.clientY - offsetY);
+    mouseX = parseInt(e.clientX);
+    mouseY = parseInt(e.clientY);
 
     // Put your mousemove stuff here
 
@@ -91,6 +91,22 @@ function handleMouseMove(e) {
     // to the current mouse position
     ctx.strokeRect(startX, startY, width, height);
 
+
+    // shade inverse of selection
+    const y1 = startY + height;
+    const y2 = startY;
+    let botY = y1 > y2 ? y1 : y2;
+    let topY = botY === y2 ? y1 : y2;
+    const x1 = startX + width;
+    const x2 = startX;
+    let botX = x1 > x2 ? x1 : x2;
+    let topX = botX === x2 ? x1 : x2;
+
+    ctx.fillRect(0, 0, canvas.width, topY); // top
+    ctx.fillRect(0, topY, topX, height); // left
+    ctx.fillRect(botX, topY, canvas.width, height); // right
+    ctx.fillRect(0, botY, canvas.width, canvas.height); // bottom
+    ctx.globalAlpha = 0.2;
 }
 
 // listen for mouse events
