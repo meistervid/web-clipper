@@ -107,8 +107,8 @@ function handleMouseMove(e) {
     let topX = botX === x2 ? x1 : x2;
 
     ctx.fillRect(0, 0, canvas.width, topY); // top
-    ctx.fillRect(0, topY, topX, height); // left
-    ctx.fillRect(botX, topY, canvas.width, height); // right
+    ctx.fillRect(0, y2, topX, height); // left
+    ctx.fillRect(botX, y2, canvas.width, height); // right
     ctx.fillRect(0, botY, canvas.width, canvas.height); // bottom
 }
 
