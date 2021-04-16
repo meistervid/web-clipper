@@ -44,6 +44,10 @@ ctx.font = "30px Arial";
 ctx.textAlign = "center";
 ctx.fillText("Select area", canvas.width/2, canvas.height/2);
 
+// fill whole screen with slight opacity
+ctx.globalAlpha = 0.2;
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
 function handleMouseDown(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -106,7 +110,6 @@ function handleMouseMove(e) {
     ctx.fillRect(0, topY, topX, height); // left
     ctx.fillRect(botX, topY, canvas.width, height); // right
     ctx.fillRect(0, botY, canvas.width, canvas.height); // bottom
-    ctx.globalAlpha = 0.2;
 }
 
 // listen for mouse events

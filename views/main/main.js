@@ -1,6 +1,6 @@
-let fetchWorkspaces = document.getElementById("fetchWorkspaces");
+let screenshot = document.getElementById("screenshot");
 
-fetchWorkspaces.addEventListener("click", async () => {
+screenshot.addEventListener("click", async () => {
   fetch('http://localhost:5001/mobile/login/1')
     .then(response => response.text())
     .then(function(token) {
