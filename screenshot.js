@@ -5,10 +5,13 @@ const idpassed = urlParams.get('id')
 const body = window.document.getElementsByTagName("body")[0];
 body.style.margin = 0;
 
+
+let originalWidth;
+let originalHeight;
 // set up screenshot
-const img = new Image();
-img.src = localStorage.getItem(idpassed);
-img.style.width = `${window.innerWidth}px`;
+const img = new Image(window.innerWidth, window.innerHeight);
+const src = localStorage.getItem(idpassed);
+img.src = src;
 img.style.border = 'none';
 body.appendChild(img);
 
@@ -20,11 +23,11 @@ canvas.height = window.innerHeight;
 canvas.style.top = '0px';
 canvas.style.left = '0px';
 canvas.style.position = "absolute";
-canvas.style.zIndex = 999;
+canvas.style.zIndex = 1;
 body.appendChild(canvas);
 
 // Some optional drawings.
-var ctx = canvas.getContext("2d");
+let ctx = canvas.getContext("2d");
 
 // style the context
 ctx.strokeStyle = "black";
@@ -33,11 +36,14 @@ ctx.lineWidth = 2;
 
 // calculate where the canvas is on the window
 // (used to help calculate mouseX/mouseY)
-var offsetX = 0;
-var offsetY = 0;
+let offsetX = 0;
+let offsetY = 0;
 
 // this flage is true when the user is dragging the mouse
-var isDown = false;
+let isDown = false;
+
+let mouseX;
+let mouseY;
 
 // label text
 ctx.font = "30px Arial";
@@ -88,8 +94,8 @@ function handleMouseMove(e) {
 
     // calculate the rectangle width/height based
     // on starting vs current mouse position
-    var width = mouseX - startX;
-    var height = mouseY - startY;
+    let width = mouseX - startX;
+    let height = mouseY - startY;
 
     // draw a new rect from the start position 
     // to the current mouse position
@@ -122,3 +128,45 @@ canvas.onmousemove = function (e) {
 canvas.onmouseup = function (e) {
     handleMouseUp(e);
 };
+
+let save = document.getElementById("save");
+
+save.addEventListener("click", () => {
+    let width = mouseX - startX;
+    let height = mouseY - startY;
+    const y1 = startY + height;
+    const y2 = startY;
+    let topY = y1 < y2 ? y1 : y2;
+    const x1 = startX + width;
+    const x2 = startX;
+    let topX = x1 < x2 ? x1 : x2;
+
+    resizeImage(width, height, topX, topY)
+});
+
+function resizeImage(width, height, x, y, callback) {
+    const canvas = document.getElementById('canvas3');
+    let context = canvas.getContext('2d');
+    let imageObj = new Image();
+
+    imageObj.onload = function () {
+        const yScale = this.naturalHeight / window.innerHeight;
+        const xScale = this.naturalWidth / window.innerWidth;
+        canvas.width = width*xScale;
+        canvas.height = height*yScale;
+        context.drawImage(
+            imageObj, 
+            x*xScale, 
+            y*yScale, 
+            Math.abs(width)*xScale, 
+            Math.abs(height)*yScale, 
+            0, 
+            0, 
+            Math.abs(width)*xScale, 
+            Math.abs(height)*yScale
+        );
+        // callback(canvas.toDataURL());
+    };
+
+    imageObj.src = src;
+}
