@@ -8,7 +8,7 @@ body.style.margin = 0;
 // set up screenshot
 const img = new Image();
 img.src = localStorage.getItem(idpassed);
-img.style.width = '100%';
+img.style.width = `${window.innerWidth}px`;
 img.style.border = 'none';
 body.appendChild(img);
 
@@ -33,7 +33,7 @@ ctx.lineWidth = 2;
 
 // calculate where the canvas is on the window
 // (used to help calculate mouseX/mouseY)
-var offsetX = 8;
+var offsetX = 0;
 var offsetY = 0;
 
 // this flage is true when the user is dragging the mouse
